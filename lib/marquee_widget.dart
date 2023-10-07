@@ -97,6 +97,10 @@ class _MarqueeState extends State<Marquee> {
   }
 
   Future<void> _animateBackward() async {
+    if (widget.backwardAnimationDuration == Duration.zero)  {
+      return await _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+    }
+    
     return await _scrollController.animateTo(
       _scrollController.position.minScrollExtent,
       curve: widget.backwardAnimation,
