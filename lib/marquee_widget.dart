@@ -89,6 +89,8 @@ class _MarqueeState extends State<Marquee> {
   }
 
   Future<void> _animateForward() async {
+    if (!_scrollController.hasClients) return;
+
     return await _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       curve: widget.forwardAnimation,
@@ -97,10 +99,13 @@ class _MarqueeState extends State<Marquee> {
   }
 
   Future<void> _animateBackward() async {
-    if (widget.backwardAnimationDuration == Duration.zero)  {
-      return _scrollController.jumpTo(_scrollController.position.minScrollExtent);
+    if (!_scrollController.hasClients) return;
+
+    if (widget.backwardAnimationDuration == Duration.zero) {
+      _setPositionToStart();
+      return;
     }
-    
+
     return await _scrollController.animateTo(
       _scrollController.position.minScrollExtent,
       curve: widget.backwardAnimation,
@@ -109,10 +114,14 @@ class _MarqueeState extends State<Marquee> {
   }
 
   void _setPositionToStart() {
+    if (!_scrollController.hasClients) return;
+
     _scrollController.jumpTo(_scrollController.position.minScrollExtent);
   }
 
   void _setPositionToEnd() {
+    if (!_scrollController.hasClients) return;
+
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
